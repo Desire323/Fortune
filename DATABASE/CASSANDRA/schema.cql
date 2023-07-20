@@ -7,7 +7,7 @@ USE history;
 
 -- Create table
 CREATE TABLE IF NOT EXISTS fortunes (
-      userId UUID,
+      userId INT,
       fortune TEXT,
       date TIMESTAMP,
       PRIMARY KEY (userId, date)

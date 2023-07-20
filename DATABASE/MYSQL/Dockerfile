@@ -6,7 +6,7 @@ COPY ../../Docker/DATABASE/MYSQL/schema.sql /docker-entrypoint-initdb.d/
 
 # Set environment variables
 ENV MYSQL_ROOT_PASSWORD=password
-ENV MYSQL_DATABASE=history
+ENV MYSQL_DATABASE=fortunes
 ENV MYSQL_USER=user
 ENV MYSQL_PASSWORD=password
 

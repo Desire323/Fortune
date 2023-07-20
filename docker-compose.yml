@@ -1,0 +1,52 @@
+services:
+  fortunes-db:
+    build: ./DATABASE
+    image: arm64v8/mysql:latest
+    container_name: fortunes-db
+    volumes:
+      - ./DATABASE/MYSQL/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: fortunes
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3308:3306"
+    networks:
+      - desire
+
+  cassandra-db:
+    build: ./DATABASE
+    image: arm64v8/cassandra:latest
+    container_name: cassandra-db
+    volumes:
+      - ./DATABASE/CASSANDRA/schema.cql:/docker-entrypoint-initdb.d/schema.cql
+    ports:
+      - "9042:9042"
+    networks:
+      - desire
+
+  fortunes-service:
+    build: ./
+    image: fortunes-service
+    container_name: fortunes-service
+    environment:
+      SPRING_APPLICATION_NAME: fortunes-service
+      SPRING_DATASOURCE_URL: jdbc:mysql://fortunes-db:3306/fortunes
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+      SPRING_PROFILES_ACTIVE: prod
+      SERVICE_REGISTRY_URL: http://service-registry:8761/eureka
+    #    ports:
+    #      - "8082:8080"
+    depends_on:
+      - fortunes-db
+      - cassandra-db
+    networks:
+      - desire
+
+networks:
+  desire:
+    external: true
