@@ -1,22 +1,30 @@
 package com.desire323.fortunes.DTO;
 
 public class Wish {
-    private int id;
     private String wish;
+    private String theme;
 
-    public Wish(int id, String wish) {
-        this.id = id;
+    public Wish(String wish, String theme) {
         this.wish = wish;
+        this.theme = theme;
     }
 
     public Wish() {
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getWish() {
         return wish;
+    }
+
+    public void setWish(String wish) {
+        this.wish = wish;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
