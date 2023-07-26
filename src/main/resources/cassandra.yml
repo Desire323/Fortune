@@ -1,0 +1,9 @@
+#basic.load_balancing_policy.local_datacenter: "MyCassandraCluster"
+datacenter: datacenter1
+cluster_name: MyCassandraCluster
+authenticator: PasswordAuthenticator
+authorizer: CassandraAuthorizer
+role_manager: CassandraRoleManager
+roles_validity_in_ms: 2000
+permissions_validity_in_ms: 2000
+credentials_validity_in_ms: 2000
