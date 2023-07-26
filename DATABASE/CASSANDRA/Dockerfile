@@ -1,13 +1,13 @@
-# Use the official Cassandra base image from Docker Hub
-FROM arm64v8/cassandra:latest
+FROM arm64v8/cassandra:3.11.2
 
-# Copy the schema.cql file to the container
-COPY schema.cql /etc/cassandra/schema.cql
+ENV LANG C.UTF-8
 
+COPY *.cql /docker-entrypoint-initdb.d/
 
-# Run the schema initialization script when the container starts
-COPY init.sh /docker-entrypoint-initdb.d/init.sh
-RUN chmod +x /docker-entrypoint-initdb.d/init.sh
+COPY entrypoint.sh /
 
-# Expose the Cassandra port (default: 9042)
-EXPOSE 9042
+RUN ["chmod", "+x", "/entrypoint.sh"]
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["cassandra", "-f"]
