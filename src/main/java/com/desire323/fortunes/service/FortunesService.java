@@ -36,18 +36,5 @@ public class FortunesService {
         }
     }
 
-    public void saveWish(String userId, Wish wish) {
-        SaveWishRequest saveWishRequest = new SaveWishRequest(Integer.parseInt(userId), wish.getWish(), wish.getTheme());
-        historyFortuneRepository.save(saveWishRequest);
-    }
-    public List<HistoryFortune> getWishes(String userId, String pagingStateString) {
-        ByteBuffer pagingState = null;
-        if (pagingStateString != null) {
-            byte[] pagingStateBytes = Base64.getDecoder().decode(pagingStateString);
-            pagingState = ByteBuffer.wrap(pagingStateBytes);
-        }
-
-        return historyFortuneRepository.findByUserId(Integer.parseInt(userId), 2, pagingState);
-    }
 
 }
