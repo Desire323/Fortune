@@ -10,6 +10,6 @@ import java.nio.ByteBuffer;
 @Repository
 public interface HistoryFortuneRepository {
     void save(SaveWishRequest fortune);
+    List<HistoryFortune> findLastByUserId(int id);
     List<HistoryFortune> findByUserId(int userId, int fetchSize, ByteBuffer pagingStateBuffer);
-
 }

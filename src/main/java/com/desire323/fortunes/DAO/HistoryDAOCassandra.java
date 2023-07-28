@@ -19,6 +19,7 @@ public class HistoryDAOCassandra implements HistoryFortuneRepository {
 
     private final PreparedStatement saveStatement;
     private final PreparedStatement findByUserIdStatement;
+    private final PreparedStatement findLastByUserIdStatement;
 
     public HistoryDAOCassandra(CqlSession cqlSession) {
         this.cqlSession = cqlSession;
@@ -30,11 +31,26 @@ public class HistoryDAOCassandra implements HistoryFortuneRepository {
         this.findByUserIdStatement = cqlSession.prepare(
                 "SELECT * FROM history.fortunes WHERE userId = ? order by date desc"
         );
+
+        this.findLastByUserIdStatement = cqlSession.prepare(
+                "SELECT * FROM history.fortunes WHERE userId = ? order by date desc limit 1"
+        );
     }
 
     public void save(SaveWishRequest fortune) {
         BoundStatement boundStatement = saveStatement.bind(fortune.getUserId(), fortune.getWish(), fortune.getTheme(), Instant.now());
         cqlSession.execute(boundStatement);
+    }
+
+    @Override
+    public List<HistoryFortune> findLastByUserId(int id) {
+        BoundStatement boundStatement = findLastByUserIdStatement.bind(id);
+        ResultSet resultSet = cqlSession.execute(boundStatement);
+        List<HistoryFortune> fortunes = mapResultSetToList(resultSet);
+        if (fortunes.isEmpty()) {
+            return null;
+        }
+        return fortunes;
     }
 
     public List<HistoryFortune> findByUserId(int userId, int fetchSize, ByteBuffer pagingStateBuffer) {
