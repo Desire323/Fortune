@@ -27,8 +27,6 @@ public class FortunesDAOMySQL implements FortunesRepository {
         Map<String, Object> params = Collections.emptyMap();
         try {
             Fortune fortune = jdbcTemplate.queryForObject(sql, params, BeanPropertyRowMapper.newInstance(Fortune.class));
-            System.out.println("\n\n\n" + "Fortune wish :" + fortune.getWish() + "\n\n\n");
-            System.out.println("\n\n\n" + "Fortune theme :" + fortune.getTheme() + "\n\n\n");
             return Optional.of(fortune);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
