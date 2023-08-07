@@ -53,6 +53,8 @@ services:
     depends_on:
       - fortunes-db
       - cassandra-db
+    ports:
+      - "5001:8080"
     networks:
       - desire
 
