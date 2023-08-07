@@ -23,7 +23,7 @@ public class FortunesController {
         this.historyFortunesService = historyFortunesService;
     }
 
-    @GetMapping("/random") //not every rest
+    @PostMapping("/random")
     public ResponseEntity<Wish> getRandomFortune(@RequestHeader("x-auth-user-id") String userId) {
         Optional<Wish> randomFortune = fortunesService.getRandomFortune();
         System.out.println("\n\n\n" + "User id  :" + userId + "\n\n\n");
@@ -41,7 +41,7 @@ public class FortunesController {
         return historyFortunesService.getWishes(userId, pagingState);
     }
 
-    @GetMapping("history/last")
+    @GetMapping("/history/last")
     public List<HistoryFortune> getLastWish(@RequestHeader("x-auth-user-id") String userId) {
         return historyFortunesService.getLastWish(userId);
     }
